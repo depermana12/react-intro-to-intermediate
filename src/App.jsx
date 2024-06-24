@@ -1,3 +1,6 @@
+import React from "react";
+import ReactDOM from "react-dom";
+
 // information flowing from app into pet through "props"
 const Pet = (props) => {
   return React.createElement("div", {}, [
