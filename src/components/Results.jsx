@@ -1,4 +1,4 @@
-import Pet from "./Pet";
+import Pets from "./Pets";
 
 const Results = ({ pets }) => {
   return (
@@ -8,7 +8,7 @@ const Results = ({ pets }) => {
       ) : (
         pets.map((pet) => {
           return (
-            <Pet
+            <Pets
               name={pet.name}
               animal={pet.animal}
               breed={pet.breed}
