@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import useBreedList from "./useBreedList";
+// eslint-disable-next-line no-unused-vars
 import Pet from "./Pet";
 
 const ANIMALS = ["bird", "cat", "dog", "rabbit", "reptile"];
@@ -8,7 +10,7 @@ const SearchParams = () => {
   const [animal, setAnimal] = useState("");
   const [breed, setBreed] = useState("");
   const [pets, setPets] = useState([]);
-  const breeds = [];
+  const [breeds] = useBreedList(animal);
 
   const requestPets = async () => {
     try {
