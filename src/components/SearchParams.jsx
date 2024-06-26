@@ -37,8 +37,11 @@ const SearchParams = () => {
   const pets = data?.pets ?? [];
 
   return (
-    <div className="search-params">
-      <form onSubmit={handleSubmitForm}>
+    <div className="mx-auto my-0 w-11/12">
+      <form
+        className="mb-10 flex flex-col items-center justify-center rounded-lg bg-gray-200 p-10 shadow-lg"
+        onSubmit={handleSubmitForm}
+      >
         {adoptedPet ? (
           <div className="pet image-container">
             <img src={adoptedPet.images[0]} alt={adoptedPet.name} />
@@ -46,13 +49,20 @@ const SearchParams = () => {
         ) : null}
         <label htmlFor="location">
           Location
-          <input id="location" name="location" placeholder="Location" />
+          <input
+            className="mb-5 block w-60 rounded-md"
+            type="text"
+            id="location"
+            name="location"
+            placeholder="Location"
+          />
         </label>
         <label htmlFor="animal">
           Animal
           <select
             id="animal"
             value={animal}
+            className="mb-5 block w-60 rounded-md"
             onChange={(e) => setAnimal(e.target.value)}
           >
             <option />
@@ -63,14 +73,21 @@ const SearchParams = () => {
         </label>
         <label htmlFor="breed">
           Breed
-          <select id="breed" name="breed" disabled={breeds.length === 0}>
+          <select
+            className="mb-5 block w-60 rounded-md disabled:opacity-40"
+            id="breed"
+            name="breed"
+            disabled={breeds.length === 0}
+          >
             <option />
             {breeds.map((breed) => (
               <option key={breed}>{breed}</option>
             ))}
           </select>
         </label>
-        <button>Submit</button>
+        <button className="rounded border-none bg-orange-500 px-6 py-2 text-white hover:opacity-50">
+          Submit
+        </button>
       </form>
       <Results pets={pets} />
     </div>
