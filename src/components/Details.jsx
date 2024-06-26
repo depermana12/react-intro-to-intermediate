@@ -1,12 +1,11 @@
-import { useContext, useState, lazy } from "react";
+import { useContext, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 
 import fetchPet from "../services/fetchPet";
 import Carousel from "./Carousel";
+import Modal from "./Modal";
 import AdoptedPetContext from "../contexts/AdoptedPet";
-
-const Modal = lazy(() => import("./Modal"));
 
 const Details = () => {
   const [showModal, setShowModal] = useState(false);
@@ -56,7 +55,7 @@ const Details = () => {
           <Modal>
             <div>
               <h1>Would you like to adopt {pet.name}</h1>
-              <div className="buttons">
+              <div className="rounded border-none bg-orange-500 px-6 py-2 text-white hover:opacity-50">
                 <button
                   onClick={() => {
                     setAdoptedPet(pet);
@@ -65,7 +64,12 @@ const Details = () => {
                 >
                   Yes
                 </button>
-                <button onClick={() => setShowModal(false)}>No</button>
+                <button
+                  className="rounded border-none bg-orange-500 px-6 py-2 text-white hover:opacity-50"
+                  onClick={() => setShowModal(false)}
+                >
+                  No
+                </button>
               </div>
             </div>
           </Modal>
