@@ -6,16 +6,25 @@ import fetchPet from "../services/fetchPet";
 import Carousel from "./Carousel";
 import Modal from "./Modal";
 import AdoptedPetContext from "../contexts/AdoptedPet";
+import { PetAPIResponse } from "../types/APIResponsesTypes";
 
 const Details = () => {
+  const { id } = useParams();
+
+  if (!id) {
+    throw new Error("id please, you have to give me an id, I wanted an id");
+  }
+
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
-  const { id } = useParams();
-  const { data, isError, isLoading } = useQuery({
-    queryKey: ["details", id],
-    queryFn: fetchPet,
-  });
-  // eslint-disable-next-line no-unused-vars
+  const { data, isError, isLoading } =
+    useQuery <
+    PetAPIResponse >
+    {
+      queryKey: ["details", id],
+      queryFn: fetchPet,
+    };
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_, setAdoptedPet] = useContext(AdoptedPetContext);
 
   if (isLoading) {
@@ -34,7 +43,11 @@ const Details = () => {
     );
   }
 
-  const pet = data.pets[0];
+  const pet = data?.pets[0];
+
+  if (!pet) {
+    throw new Error("no pet lol");
+  }
 
   return (
     <div className="m-10 flex flex-col items-center justify-center rounded-lg bg-gray-100 p-10 shadow-lg">
