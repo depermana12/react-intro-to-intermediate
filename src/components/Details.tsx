@@ -6,10 +6,10 @@ import fetchPet from "../services/fetchPet";
 import Carousel from "./Carousel";
 import Modal from "./Modal";
 import AdoptedPetContext from "../contexts/AdoptedPet";
-import { PetAPIResponse } from "../types/APIResponsesTypes";
+// import { PetAPIResponse } from "../types/APIResponsesTypes";
 
 const Details = () => {
-  const { id } = useParams();
+  const { id } = useParams<{ id: string }>();
 
   if (!id) {
     throw new Error("id please, you have to give me an id, I wanted an id");
@@ -17,31 +17,16 @@ const Details = () => {
 
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
-  const { data, isError, isLoading } =
-    useQuery <
-    PetAPIResponse >
-    {
-      queryKey: ["details", id],
-      queryFn: fetchPet,
-    };
+
+  const { data, isError, isLoading } = useQuery({
+    queryKey: ["details", id] as const,
+    queryFn: fetchPet,
+  });
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_, setAdoptedPet] = useContext(AdoptedPetContext);
 
-  if (isLoading) {
-    return (
-      <div className="loading-pane">
-        <h2 className="loader">🌀</h2>
-      </div>
-    );
-  }
-
-  if (isError) {
-    return (
-      <div className="error-pane">
-        <h2>Error loading pet details</h2>
-      </div>
-    );
-  }
+  if (isLoading) return <div>Loading...</div>;
+  if (isError) return <div>Error loading pet details</div>;
 
   const pet = data?.pets[0];
 
