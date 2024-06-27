@@ -1,41 +1,19 @@
-import { useContext, useState, lazy } from "react";
+import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
-
-import fetchPet from "../services/fetchPet";
+import { useDispatch } from "react-redux";
+import { adopt } from "../slices/adoptedPetSlice";
+import { useGetPetQuery } from "../services/petApiService";
 import Carousel from "./Carousel";
-import AdoptedPetContext from "../contexts/AdoptedPet";
-
-const Modal = lazy(() => import("./Modal"));
+import Modal from "./Modal";
 
 const Details = () => {
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
   const { id } = useParams();
-  const { data, isError, isLoading } = useQuery({
-    queryKey: ["details", id],
-    queryFn: fetchPet,
-  });
-  // eslint-disable-next-line no-unused-vars
-  const [_, setAdoptedPet] = useContext(AdoptedPetContext);
+  const { data: pet, isLoading } = useGetPetQuery(id);
+  const dispatch = useDispatch();
 
-  if (isLoading) {
-    return (
-      <div className="loading-pane">
-        <h2 className="loader">🌀</h2>
-      </div>
-    );
-  }
-
-  if (isError) {
-    return (
-      <div className="error-pane">
-        <h2>Error loading pet details</h2>
-      </div>
-    );
-  }
-
-  const pet = data.pets[0];
+  if (isLoading) return <h2>🌀</h2>;
 
   return (
     <div className="m-10 flex flex-col items-center justify-center rounded-lg bg-gray-100 p-10 shadow-lg">
@@ -59,7 +37,7 @@ const Details = () => {
               <div className="buttons">
                 <button
                   onClick={() => {
-                    setAdoptedPet(pet);
+                    dispatch(adopt(pet));
                     navigate("/");
                   }}
                 >
